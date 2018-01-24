@@ -21,6 +21,8 @@ gem 'puma', '~> 3.7'
 
 gem 'faker'
 
+gem 'geocoder'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

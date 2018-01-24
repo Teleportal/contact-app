@@ -5,6 +5,7 @@ class ContactsController < ApplicationController
   end
 
   def create
+    # coordinates = Geocoder.coordinates(params[:address])
     contact = Contact.new(
                           first_name: params[:first_name],
                           middle_name: params[:middle_name],
@@ -13,10 +14,14 @@ class ContactsController < ApplicationController
                           phone_number: params[:phone_number],
                           birthday: params[:birthday],
                           bio: params[:bio]
+                          # latitude: coordinates[0],
+                          # longitude: coordinates[1]
                           )
-    contact.save
-    
-    render json: contact.as_json
+    if contact.save
+      render json: contact.as_json
+    else
+      render json: {errors: contact.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -34,9 +39,15 @@ class ContactsController < ApplicationController
     contact.phone_number = params[:phone_number] || contact.phone_number
     contact.birthday = params[:birthday] || contact.birthday
     contact.bio = params[:bio] || contact.bio
+    # coordinates = Geocoder.coordinates(params[:address])
+    # contact.latitude = coordinates[0] || contact.latitude
+    # contact.longitude = coordinates[1] || contact.longitude
 
-    contact.save
-    render json: contact.as_json
+    if contact.save
+      render json: contact.as_json
+    else
+      render json: {errors: contact.errors.full_messages}, status: :unprocessable_entity
+    end
   end
 
   def destroy
