@@ -1,19 +1,20 @@
 class ContactsController < ApplicationController
   def index
-    contacts = Contact.all
+    @contacts = Contact.all
 
+    search_attribute = params[:attribute]
     search_term = params[:search]
 
-    if search_term
-      contacts = contacts.where("first_name iLike ?", "%#{search_term}%")
+    if search_attribute && search_term
+      @contacts = @contacts.where("#{search_attribute} iLike ?", "%#{search_term}%")
     end
 
-    render json: contacts.as_json
+    render 'index.json.jbuilder'
   end
 
   def create
     # coordinates = Geocoder.coordinates(params[:address])
-    contact = Contact.new(
+    @contact = Contact.new(
                           first_name: params[:first_name],
                           middle_name: params[:middle_name],
                           last_name: params[:last_name],
@@ -24,36 +25,36 @@ class ContactsController < ApplicationController
                           # latitude: coordinates[0],
                           # longitude: coordinates[1]
                           )
-    if contact.save
-      render json: contact.as_json
+    if @contact.save
+      render 'show.json.jbuilder'
     else
-      render json: {errors: contact.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: @contact.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   def show
-    contact = Contact.find(params[:id])
-    render json: contact.as_json
+    @contact = Contact.find(params[:id])
+    render 'show.json.jbuilder'
   end
 
   def update
-    contact = Contact.find(params[:id])
+    @contact = Contact.find(params[:id])
 
-    contact.first_name = params[:first_name] || contact.first_name
-    contact.middle_name = params[:middle_name] || contact.middle_name
-    contact.last_name = params[:last_name] || contact.last_name
-    contact.email = params[:email] || contact.email
-    contact.phone_number = params[:phone_number] || contact.phone_number
-    contact.birthday = params[:birthday] || contact.birthday
-    contact.bio = params[:bio] || contact.bio
+    @contact.first_name = params[:first_name] || @contact.first_name
+    @contact.middle_name = params[:middle_name] || @contact.middle_name
+    @contact.last_name = params[:last_name] || @contact.last_name
+    @contact.email = params[:email] || @contact.email
+    @contact.phone_number = params[:phone_number] || @contact.phone_number
+    @contact.birthday = params[:birthday] || @contact.birthday
+    @contact.bio = params[:bio] || @contact.bio
     # coordinates = Geocoder.coordinates(params[:address])
-    # contact.latitude = coordinates[0] || contact.latitude
-    # contact.longitude = coordinates[1] || contact.longitude
+    # @contact.latitude = coordinates[0] || @contact.latitude
+    # @contact.longitude = coordinates[1] || @contact.longitude
 
-    if contact.save
-      render json: contact.as_json
+    if @contact.save
+      render 'show.json.jbuilder'
     else
-      render json: {errors: contact.errors.full_messages}, status: :unprocessable_entity
+      render json: {errors: @contact.errors.full_messages}, status: :unprocessable_entity
     end
   end
 

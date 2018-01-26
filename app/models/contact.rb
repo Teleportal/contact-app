@@ -21,18 +21,18 @@ class Contact < ApplicationRecord
     end
   end
 
-  def as_json
-    {
-    id: id,
-    first_name: first_name,
-    middle_name: middle_name,
-    last_name: last_name,
-    full_name: full_name,
-    email: email,
-    phone_number: phone_number,
-    birthday: birthday,
-    bio: bio,
-    updated_at: friendly_updated_at
-    }
-  end
+  # def as_json
+  #   {
+  #   id: id,
+  #   first_name: first_name,
+  #   middle_name: middle_name,
+  #   last_name: last_name,
+  #   full_name: full_name,
+  #   email: email,
+  #   phone_number: phone_number,
+  #   birthday: birthday,
+  #   bio: bio,
+  #   updated_at: friendly_updated_at
+  #   }
+  # end
 end
